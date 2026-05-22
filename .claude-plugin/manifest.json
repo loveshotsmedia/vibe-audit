@@ -1,0 +1,34 @@
+{
+  "name": "vibe-audit",
+  "version": "1.0.0",
+  "description": "Tab-by-tab Playwright audit for vibe-coded apps. Finds what the AI said was working but isn't — then generates a living test suite.",
+  "author": "loveshotsmedia",
+  "license": "MIT",
+  "skills": [
+    {
+      "name": "tab-deep-audit",
+      "path": "vibe-audit/SKILL.md",
+      "commands": ["vibe-audit"]
+    }
+  ],
+  "commands": [
+    {
+      "name": "vibe-audit",
+      "path": "commands/vibe-audit.md",
+      "description": "Run a full tab-by-tab Playwright audit of your vibe-coded app"
+    }
+  ],
+  "engines": [
+    {
+      "name": "audit-engine",
+      "path": "engine/",
+      "install": "npm install && npx playwright install chromium"
+    }
+  ],
+  "repository": "https://github.com/loveshotsmedia/vibe-audit",
+  "homepage": "https://github.com/loveshotsmedia/vibe-audit#readme",
+  "keywords": ["playwright", "testing", "vibe-coding", "lovable", "audit", "claude-code"],
+  "engines_required": {
+    "node": ">=18"
+  }
+}

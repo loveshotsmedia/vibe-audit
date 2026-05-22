@@ -1,0 +1,38 @@
+{
+  "name": "vibe-audit",
+  "version": "1.0.0",
+  "description": "Tab-by-tab Playwright audit for vibe-coded apps. Finds what the AI said was working but isn't.",
+  "main": "engine/audit.engine.js",
+  "scripts": {
+    "audit": "ts-node engine/audit.engine.ts",
+    "test": "playwright test tests/audit/ --config=engine/playwright.config.ts",
+    "install-browsers": "playwright install chromium"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "vibe-coding",
+    "lovable",
+    "cursor",
+    "bolt",
+    "audit",
+    "claude-code",
+    "e2e"
+  ],
+  "author": "Love Shots Media <cameron@loveshotsmedia.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loveshotsmedia/vibe-audit.git"
+  },
+  "homepage": "https://github.com/loveshotsmedia/vibe-audit#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

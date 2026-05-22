@@ -1,0 +1,16 @@
+node_modules/
+dist/
+*.js.map
+playwright-report/
+test-results/
+screenshots/
+audit-findings.json
+audit.profile.yml
+tests/audit/open-issues-*.md
+.env
+.env.local
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
