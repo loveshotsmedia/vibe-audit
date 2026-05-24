@@ -2,10 +2,10 @@
   "name": "vibe-audit",
   "version": "1.0.0",
   "description": "Tab-by-tab Playwright audit for vibe-coded apps. Finds what the AI said was working but isn't.",
-  "main": "engine/audit.engine.js",
+  "type": "commonjs",
   "scripts": {
-    "audit": "ts-node engine/audit.engine.ts",
-    "test": "playwright test tests/audit/ --config=engine/playwright.config.ts",
+    "audit": "ts-node --project tsconfig.json engine/audit.engine.ts",
+    "test": "playwright test tests/audit/",
     "install-browsers": "playwright install chromium"
   },
   "keywords": [

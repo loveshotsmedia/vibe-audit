@@ -1,4 +1,4 @@
-import { chromium, Browser, Page, BrowserContext } from 'playwright';
+import { chromium, Browser, Page, BrowserContext } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 import { APP_CONFIG, TabConfig, KpiConfig, ListConfig, ButtonConfig } from './audit.config';
@@ -182,7 +182,6 @@ async function auditLists(page: Page, lists: ListConfig[]): Promise<ListResult[]
 async function auditButtons(
   page: Page,
   buttons: ButtonConfig[],
-  networkLogsBefore: number,
   networkLogs: NetworkLog[]
 ): Promise<ButtonResult[]> {
   const results: ButtonResult[] = [];
@@ -265,16 +264,13 @@ async function auditButtons(
 // ---- Tab Audit ----
 
 async function auditTab(
-  page: Page,
+  context: BrowserContext,
   tab: TabConfig,
   screenshotDir: string
 ): Promise<TabResult> {
+  const page = await context.newPage();
   const networkLogs: NetworkLog[] = [];
   const consoleErrors: string[] = [];
-
-  page.removeAllListeners('console');
-  page.removeAllListeners('request');
-  page.removeAllListeners('response');
 
   page.on('console', msg => {
     if (msg.type() === 'error') consoleErrors.push(msg.text());
@@ -322,7 +318,7 @@ async function auditTab(
 
   const kpis = await auditKpis(page, tab.kpis ?? [], networkLogs);
   const lists = await auditLists(page, tab.lists ?? []);
-  const buttons = await auditButtons(page, tab.buttons ?? [], networkLogs.length, networkLogs);
+  const buttons = await auditButtons(page, tab.buttons ?? [], networkLogs);
 
   const anomalies: string[] = [
     ...(redirected ? [`Redirected from ${tab.path} to ${finalUrl}`] : []),
@@ -335,6 +331,8 @@ async function auditTab(
       .filter(l => l.status && l.status >= 400)
       .map(l => `API ${l.url} returned HTTP ${l.status}`),
   ];
+
+  await page.close();
 
   return {
     name: tab.name,
@@ -357,20 +355,21 @@ export async function runAudit(): Promise<AuditReport> {
   const screenshotDir = path.join(process.cwd(), 'screenshots');
   fs.mkdirSync(screenshotDir, { recursive: true });
 
-  const browser: Browser = await chromium.launch({ headless: false });
+  const browser: Browser = await chromium.launch({ headless: !!process.env.CI });
   const context: BrowserContext = await browser.newContext();
   const page: Page = await context.newPage();
 
   try {
     console.log(`\nAuthenticating as ${APP_CONFIG.auth.email}...`);
     await authenticate(page);
+    await page.close();
     console.log('Authenticated.\n');
 
     const tabResults: TabResult[] = [];
 
     for (const tab of APP_CONFIG.tabs) {
       process.stdout.write(`Auditing: ${tab.name}...`);
-      const result = await auditTab(page, tab, screenshotDir);
+      const result = await auditTab(context, tab, screenshotDir);
       tabResults.push(result);
       const status = result.anomalies.length === 0 ? ' OK' : ` ${result.anomalies.length} anomalies`;
       console.log(status);

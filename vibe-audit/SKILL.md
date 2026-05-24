@@ -1,3 +1,8 @@
+---
+name: tab-deep-audit
+description: Tab-by-tab Playwright audit for vibe-coded apps. Finds broken KPIs, dead buttons, and missing data, then generates a living per-tab Playwright test suite customized to your codebase.
+---
+
 # Tab Deep Audit — Universal Web App Audit Engine
 
 **Invocation**: `/tab-deep-audit`

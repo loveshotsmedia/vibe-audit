@@ -52,10 +52,11 @@ Then in Claude Code:
 git clone https://github.com/loveshotsmedia/vibe-audit
 ```
 
-Copy `vibe-audit/SKILL.md` into your project at `.claude/skills/tab-deep-audit/SKILL.md`.
+Copy `vibe-audit/vibe-audit/SKILL.md` into your project at `.claude/skills/tab-deep-audit/SKILL.md`.
 
 Copy the engine files:
 ```bash
+cp vibe-audit/vibe-audit/SKILL.md .claude/skills/tab-deep-audit/SKILL.md
 cp vibe-audit/engine/audit.config.ts ./audit.config.ts
 cp vibe-audit/engine/playwright.config.ts ./playwright.config.ts
 npm install -D @playwright/test typescript ts-node
